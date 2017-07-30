@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setGeometry(400, 250, 542, 390);
 
     c.open();
-    l.open();
+    //l.open();
 }
 
 MainWindow::~MainWindow()
@@ -35,8 +35,10 @@ void MainWindow::draw(ccdData t)
 
 void MainWindow::on_getData_clicked()
 {
-    ccdData dat = c.getData();
-    draw(dat);
+    ccdData dat;
+    bool st = c.getData(dat);
+    if (st)
+        draw(dat);
 }
 
 void MainWindow::on_ledSwitch_clicked(){

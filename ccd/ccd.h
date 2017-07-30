@@ -1,25 +1,22 @@
 #ifndef CCD_H
 #define CCD_H
-#include <ftd2xx.h>
+#include "ftd2xx.h"
+#include "ftdevice.h"
 #include <string>
 using namespace std;
 struct ccdData
 {
     unsigned short dat[3648];
+    unsigned short &operator[](int p){return dat[p];}
 };
 
-class ccd
+class ccd : public ftdevice
 {
 public:
-    string serialNumber = "12345678";
-    ccd();
-    FT_HANDLE handle;
+    ccd(const string &serialNumber = "FTT5B0N6") : ftdevice(serialNumber) {}
     bool open();
-    void write(char *str, int size);
-    ccdData read();
-    ccdData getData();
+    bool getData(ccdData &dat);
 private:
-    void deviceList();
 };
 
 #endif // CCD_H

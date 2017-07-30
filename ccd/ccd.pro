@@ -28,29 +28,34 @@ SOURCES += \
         mainwindow.cpp \
     ccd.cpp \
     qcustomplot.cpp \
-    led.cpp
+    led.cpp \
+    ftdevice.cpp
 
 HEADERS += \
         mainwindow.h \
     ccd.h \
     qcustomplot.h \
     WinTypes.h \
-    led.h
+    led.h \
+    ftdevice.h \
+    ftd2xx.h
 
 FORMS += \
         mainwindow.ui
 
+LIBS += -LC:/Users/jiang/iGEM2017-SDSZ-China/ccd/ -lftd2xx
 
-macx: LIBS += -lftd2xx.1.4.4
+#macx: LIBS += -lftd2xx.1.4.4
 
-macx: LIBS += -L$$PWD/./ -lftd2xx
+#macx: LIBS += -L$$PWD/./ -lftd2xx
 
-INCLUDEPATH += $$PWD/.
-DEPENDPATH += $$PWD/.
+#INCLUDEPATH += $$PWD/.
+#DEPENDPATH += $$PWD/.
 
-macx: PRE_TARGETDEPS += $$PWD/./libftd2xx.a
+#macx: PRE_TARGETDEPS += $$PWD/./libftd2xx.a
 
-macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -lftd2xx.1.4.4
+#macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -lftd2xx.1.4.4
 
-INCLUDEPATH += $$PWD/../../../../usr/local/lib
-DEPENDPATH += $$PWD/../../../../usr/local/lib
+#INCLUDEPATH += $$PWD/../../../../usr/local/lib
+#DEPENDPATH += $$PWD/../../../../usr/local/lib
+
