@@ -29,7 +29,8 @@ SOURCES += \
     ccd.cpp \
     qcustomplot.cpp \
     led.cpp \
-    ftdevice.cpp
+    ftdevice.cpp \
+    datastore.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,12 +39,13 @@ HEADERS += \
     WinTypes.h \
     led.h \
     ftdevice.h \
-    ftd2xx.h
+    ftd2xx.h \
+    datastore.h
 
 FORMS += \
         mainwindow.ui
 
-macx: LIBS += -lftd2xx.1.4.4
+#macx: LIBS += -lftd2xx.1.4.4
 
 macx: LIBS += -L$$PWD/./ -lftd2xx
 
@@ -52,7 +54,7 @@ DEPENDPATH += $$PWD/.
 
 macx: PRE_TARGETDEPS += $$PWD/./libftd2xx.a
 
-macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -lftd2xx.1.4.4
+macx: LIBS += -L$$PWD/./ -lftd2xx
 
 INCLUDEPATH += $$PWD/../../../../usr/local/lib
 DEPENDPATH += $$PWD/../../../../usr/local/lib
