@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setGeometry(400, 250, 542, 390);
-
+    ui->getData->setDisabled(true);
     c.open();
     //l.open();
 }
@@ -37,8 +37,11 @@ void MainWindow::on_getData_clicked()
 {
     ccdData dat;
     bool st = c.getData(dat);
-    if (st)
+    if (st){
         draw(dat);
+        ds.writeData(dat,QDateTime::currentDateTime());
+    }
+    //tmp outside if
 }
 
 void MainWindow::on_ledSwitch_clicked(){
@@ -47,5 +50,15 @@ void MainWindow::on_ledSwitch_clicked(){
         ui->ledSwitch->setText("Turn Off");
     }else{
         ui->ledSwitch->setText("Turn On");
+    }
+}
+
+void MainWindow::on_setDirButton_clicked(){
+    QString directory =
+        QDir::toNativeSeparators(QFileDialog::getExistingDirectory(this, tr("Set Directory"), QDir::homePath()));
+    if (!directory.isEmpty()) {
+        ui->getData->setDisabled(false);
+        ds.setDir(directory);
+        qDebug() <<ds.getDir();
     }
 }

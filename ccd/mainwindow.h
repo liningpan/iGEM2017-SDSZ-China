@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "ccd.h"
 #include "led.h"
+#include "datastore.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,10 +21,12 @@ public:
 private slots:
     void on_getData_clicked();
     void on_ledSwitch_clicked();
+    void on_setDirButton_clicked();
 private:
     Ui::MainWindow *ui;
     ccd c;
     led l;
+    dataStore ds;
     void draw(ccdData t);
 };
 
