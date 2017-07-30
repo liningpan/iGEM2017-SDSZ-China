@@ -43,19 +43,24 @@ HEADERS += \
 FORMS += \
         mainwindow.ui
 
-LIBS += -LC:/Users/jiang/iGEM2017-SDSZ-China/ccd/ -lftd2xx
+macx: LIBS += -lftd2xx.1.4.4
 
-#macx: LIBS += -lftd2xx.1.4.4
+macx: LIBS += -L$$PWD/./ -lftd2xx
 
-#macx: LIBS += -L$$PWD/./ -lftd2xx
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
 
-#INCLUDEPATH += $$PWD/.
-#DEPENDPATH += $$PWD/.
+macx: PRE_TARGETDEPS += $$PWD/./libftd2xx.a
 
-#macx: PRE_TARGETDEPS += $$PWD/./libftd2xx.a
+macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -lftd2xx.1.4.4
 
-#macx: LIBS += -L$$PWD/../../../../usr/local/lib/ -lftd2xx.1.4.4
+INCLUDEPATH += $$PWD/../../../../usr/local/lib
+DEPENDPATH += $$PWD/../../../../usr/local/lib
 
-#INCLUDEPATH += $$PWD/../../../../usr/local/lib
-#DEPENDPATH += $$PWD/../../../../usr/local/lib
 
+win32: LIBS += -L$$PWD/./ -lftd2xx
+
+INCLUDEPATH += $$PWD/.
+DEPENDPATH += $$PWD/.
+
+win32: PRE_TARGETDEPS += $$PWD/./ftd2xx.lib
