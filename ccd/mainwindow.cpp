@@ -9,8 +9,26 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     setGeometry(400, 250, 542, 390);
     ui->getData->setDisabled(true);
-    c.open();
-    l.open();
+    if(c.open()&&l.open()){
+        ui->connectButton->setDisabled(true);
+        ui->setDirButton->setDisabled(false);
+    }else{
+        ui->connectButton->setDisabled(false);
+        ui->setDirButton->setDisabled(true);
+    }
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()), this, SLOT( timer_timeout()) );
+    timer->setInterval(100);
+    scan = false;
+}
+void MainWindow::on_connectButton_clicked(){
+    if(c.open()&&l.open()){
+        ui->connectButton->setDisabled(true);
+        ui->setDirButton->setDisabled(false);
+    }else{
+        ui->connectButton->setDisabled(false);
+        ui->setDirButton->setDisabled(true);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -31,17 +49,32 @@ void MainWindow::draw(ccdData t)
    ui->customPlot->yAxis->setRange(0, mx);
    ui->customPlot->replot();
 }
-
-
-void MainWindow::on_getData_clicked()
-{
+void MainWindow::getData(){
     ccdData dat;
     bool st = c.getData(dat);
     if (st){
         draw(dat);
         ds.writeData(dat,QDateTime::currentDateTime());
     }
-    //tmp outside if
+}
+void MainWindow::timer_timeout(){
+    getData();
+    timer->start();
+}
+
+void MainWindow::on_getData_clicked()
+{
+    if(isScan()){
+        timer->stop();
+        ui->getData->setText("Get Data");
+        scan = false;
+    }
+    else{
+        getData();
+        timer->start();
+        ui->getData->setText("Stop");
+        scan = true;
+    }
 }
 
 void MainWindow::on_ledSwitch_clicked(){

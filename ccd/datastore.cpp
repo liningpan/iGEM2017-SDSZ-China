@@ -17,11 +17,11 @@ QJsonDocument dataStore::toJson(ccdData &cd,QString t){
 dataStore::dataStore(){
     dir = "";
 }
-bool writeData(ccdData &cd,QDateTime t){
+bool dataStore::writeData(ccdData &cd,QDateTime t){
     QString strtime = t.toString(Qt::DateFormat::ISODateWithMs);
     QJsonDocument js = toJson(cd,strtime);
     //qDebug() << js;
-    QString path = dir + "/" + strtime + ".txt";
+    QString path = dir + "/" + strtime + ".json";
     QFile file(path);
     if(file.open(QIODevice::WriteOnly|QIODevice::Text)){
         qDebug() << "OK";
