@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setGeometry(400, 250, 542, 390);
     ui->getData->setDisabled(true);
     c.open();
-    //l.open();
+    l.open();
 }
 
 MainWindow::~MainWindow()
