@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer,SIGNAL(timeout()), this, SLOT( timer_timeout()) );
     timer->setInterval(100);
     scan = false;
+    count = 0;
+    cd= new ccdData[10];
 }
 void MainWindow::on_connectButton_clicked(){
     if(c.open()&&l.open()){
@@ -50,16 +52,21 @@ void MainWindow::draw(ccdData t)
    ui->customPlot->replot();
 }
 void MainWindow::getData(){
-    ccdData dat;
-    bool st = c.getData(dat);
+    bool st = c.getData(cd[count]);
     if (st){
-        draw(dat);
-        ds.writeData(dat,QDateTime::currentDateTime());
+        draw(cd[count]);
+        qDebug() << count;
+        count+=1;
+        if(count == 10){
+            ds.writeData(cd,10,QDateTime::currentDateTime());
+            count = 0;
+        }
     }
 }
 void MainWindow::timer_timeout(){
     getData();
     timer->start();
+
 }
 
 void MainWindow::on_getData_clicked()
@@ -67,6 +74,10 @@ void MainWindow::on_getData_clicked()
     if(isScan()){
         timer->stop();
         ui->getData->setText("Get Data");
+        if(count != 0){
+            ds.writeData(cd,count,QDateTime::currentDateTime());
+            count = 0;
+        }
         scan = false;
     }
     else{

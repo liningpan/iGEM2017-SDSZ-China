@@ -29,11 +29,14 @@ private:
     QTimer* timer;
     Ui::MainWindow *ui;
     ccd c;
+    ccdData* cd;
     led l;
     dataStore ds;
     void draw(ccdData t);
     void getData();
     bool scan;
+    int count;
+    void writeToFile(bool stop);
 };
 
 #endif // MAINWINDOW_H

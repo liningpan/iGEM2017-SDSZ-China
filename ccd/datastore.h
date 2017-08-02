@@ -15,12 +15,12 @@ class dataStore
 {
     QString dir;
     bool openFile();
-    QJsonDocument toJson(ccdData &cd,QString t);
+    QJsonDocument toJson(ccdData* cd,int len,QString t);
 public:
     dataStore();
     void setDir(QString &d){ dir = d; }
     QString getDir(){ return dir; }
-    bool writeData(ccdData &cd,QDateTime t);
+    bool writeData(ccdData* cd,int len,QDateTime t);
 };
 
 #endif // DATASTORE_H
