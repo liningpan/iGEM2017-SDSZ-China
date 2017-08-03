@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()), this, SLOT( timer_timeout()) );
+    connect(ui->actionNew,SIGNAL(triggered(bool)),this,SLOT(on_new_file_triggered()));
+    connect(ui->actionSettings,SIGNAL(triggered(bool)),this,SLOT(on_settings_triggered()));
     timer->setInterval(100);
     scan = false;
     count = 0;
@@ -31,6 +33,14 @@ void MainWindow::on_connectButton_clicked(){
         ui->connectButton->setDisabled(false);
         ui->setDirButton->setDisabled(true);
     }
+}
+void MainWindow::on_new_file_triggered(){
+    qDebug()<<"new";
+}
+void MainWindow::on_settings_triggered(){
+    qDebug()<<"Setting";
+    SettingsDialog* sd = new SettingsDialog(this);
+    sd->show();
 }
 
 MainWindow::~MainWindow()
@@ -99,10 +109,13 @@ void MainWindow::on_ledSwitch_clicked(){
 
 void MainWindow::on_setDirButton_clicked(){
     QString directory =
-        QDir::toNativeSeparators(QFileDialog::getExistingDirectory(this, tr("Set Directory"), QDir::homePath()));
+        QDir::toNativeSeparators(QFileDialog::getExistingDirectory(this, tr("Set Directory"), QDir::fromNativeSeparators(ds.getDir())));
     if (!directory.isEmpty()) {
         ui->getData->setDisabled(false);
         ds.setDir(directory);
         qDebug() <<ds.getDir();
     }
+}
+void MainWindow::setChanged(mySettings ms){
+
 }

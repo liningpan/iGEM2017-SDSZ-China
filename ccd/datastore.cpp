@@ -19,7 +19,7 @@ QJsonDocument dataStore::toJson(ccdData* cd,int len,QString t){
 }
 
 dataStore::dataStore(){
-    dir = "";
+    dir = setman.getDefaultDir();
 }
 bool dataStore::writeData(ccdData* cd,int len,QDateTime t){
     QString strtime = t.toString(Qt::DateFormat::ISODateWithMs);

@@ -10,15 +10,17 @@
 #include<QDateTime>
 #include<QDebug>
 #include "ccd.h"
+#include"settingsmanager.h"
 using namespace std;
 class dataStore
 {
     QString dir;
     bool openFile();
     QJsonDocument toJson(ccdData* cd,int len,QString t);
+    SettingsManager setman;
 public:
     dataStore();
-    void setDir(QString &d){ dir = d; }
+    void setDir(QString &d){ dir = d; setman.setDefaultDir(d);}
     QString getDir(){ return dir; }
     bool writeData(ccdData* cd,int len,QDateTime t);
 };

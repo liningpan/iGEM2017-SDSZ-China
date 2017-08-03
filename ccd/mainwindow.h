@@ -6,6 +6,7 @@
 #include "led.h"
 #include "datastore.h"
 #include <QTimer>
+#include "settingsdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +26,10 @@ private slots:
     void on_setDirButton_clicked();
     void on_connectButton_clicked();
     void timer_timeout();
+    void on_new_file_triggered();
+    void on_settings_triggered();
+public slots:
+    void setChanged(mySettings ms);
 private:
     QTimer* timer;
     Ui::MainWindow *ui;

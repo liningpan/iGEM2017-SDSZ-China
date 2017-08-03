@@ -30,7 +30,9 @@ SOURCES += \
     qcustomplot.cpp \
     led.cpp \
     ftdevice.cpp \
-    datastore.cpp
+    datastore.cpp \
+    settingsmanager.cpp \
+    settingsdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,10 +42,13 @@ HEADERS += \
     led.h \
     ftdevice.h \
     ftd2xx.h \
-    datastore.h
+    datastore.h \
+    settingsmanager.h \
+    settingsdialog.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    settingsdialog.ui
 
 #macx: LIBS += -lftd2xx.1.4.4
 
