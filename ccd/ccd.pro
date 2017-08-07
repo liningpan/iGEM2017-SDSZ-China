@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui printsupport
+QT       += core gui printsupport charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,25 +26,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    ccd.cpp \
     qcustomplot.cpp \
-    led.cpp \
-    ftdevice.cpp \
     datastore.cpp \
     settingsmanager.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    ftiodevice.cpp \
+    ccddevice.cpp \
+    ccddatareceiver.cpp \
+    leddevice.cpp
 
 HEADERS += \
         mainwindow.h \
-    ccd.h \
     qcustomplot.h \
     WinTypes.h \
-    led.h \
-    ftdevice.h \
     ftd2xx.h \
     datastore.h \
     settingsmanager.h \
-    settingsdialog.h
+    settingsdialog.h \
+    ftiodevice.h \
+    ccddevice.h \
+    ccddatareceiver.h \
+    leddevice.h
 
 FORMS += \
         mainwindow.ui \

@@ -1,32 +1,51 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QChart>
+#include <QtCharts/QValueAxis>
 #include "ftd2xx.h"
-#include "qcustomplot.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setGeometry(400, 250, 542, 390);
     ui->getData->setDisabled(true);
-    if(c.open()&&l.open()){
+    cd = new ccdDevice("12345678",this);
+    ld = new LedDevice("A501JYU4",this);
+    if(cd->open()&&ld->open()){
         ui->connectButton->setDisabled(true);
         ui->setDirButton->setDisabled(false);
     }else{
         ui->connectButton->setDisabled(false);
         ui->setDirButton->setDisabled(true);
     }
-    timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()), this, SLOT( timer_timeout()) );
+    m_chart = new QChart;
+    ui->customPlot->setChart(m_chart);
+    m_series = new QLineSeries;
+    m_chart->addSeries(m_series);
+    QValueAxis *axisX = new QValueAxis;
+    axisX->setRange(0, 2000);
+    axisX->setLabelFormat("%g");
+    axisX->setTitleText("Samples");
+    QValueAxis *axisY = new QValueAxis;
+    axisY->setRange(0,65535);
+    axisY->setTitleText("Intensity level");
+    m_chart->setAxisX(axisX, m_series);
+    m_chart->setAxisY(axisY, m_series);
+    m_chart->legend()->hide();
+    m_chart->setTitle("Data from ccd");
+
+    cdr = new CcdDataReceiver(m_series,this);
+    cdr->open(QIODevice::WriteOnly);
+
     connect(ui->actionNew,SIGNAL(triggered(bool)),this,SLOT(on_new_file_triggered()));
     connect(ui->actionSettings,SIGNAL(triggered(bool)),this,SLOT(on_settings_triggered()));
-    timer->setInterval(100);
     scan = false;
-    count = 0;
-    cd= new ccdData[10];
+    //count = 0;
 }
 void MainWindow::on_connectButton_clicked(){
-    if(c.open()&&l.open()){
+    if(cd->open()&&ld->open()){
         ui->connectButton->setDisabled(true);
         ui->setDirButton->setDisabled(false);
     }else{
@@ -46,60 +65,26 @@ void MainWindow::on_settings_triggered(){
 MainWindow::~MainWindow()
 {
     delete ui;
+    cd->stop();
+    cdr->close();
 }
 
-void MainWindow::draw(ccdData t)
-{
-   QVector<double> x(3648), y(3648);
-   double mx = 0;
-   for (int i = 50; i < 3600; i++)
-       x[i] = i, mx = max(y[i] = t.dat[i], mx);
-   mx = max(mx,5000.0);
-   ui->customPlot->addGraph();
-   ui->customPlot->graph(0)->setData(x, y);
-   ui->customPlot->xAxis->setRange(0, 3648);
-   ui->customPlot->yAxis->setRange(0, mx);
-   ui->customPlot->replot();
-}
-void MainWindow::getData(){
-    bool st = c.getData(cd[count]);
-    if (st){
-        draw(cd[count]);
-        qDebug() << count;
-        count+=1;
-        if(count == 10){
-            ds.writeData(cd,10,QDateTime::currentDateTime());
-            count = 0;
-        }
-    }
-}
-void MainWindow::timer_timeout(){
-    getData();
-    timer->start();
-
-}
 
 void MainWindow::on_getData_clicked()
 {
     if(isScan()){
-        timer->stop();
-        ui->getData->setText("Get Data");
-        if(count != 0){
-            ds.writeData(cd,count,QDateTime::currentDateTime());
-            count = 0;
-        }
+        cd->stop();
         scan = false;
     }
     else{
-        getData();
-        timer->start();
+        cd->start(cdr,0.5);
         ui->getData->setText("Stop");
         scan = true;
     }
 }
 
 void MainWindow::on_ledSwitch_clicked(){
-    bool condition = l.trigger();
+    bool condition = ld->trigger();
     if(condition){
         ui->ledSwitch->setText("Turn Off");
     }else{
@@ -115,7 +100,4 @@ void MainWindow::on_setDirButton_clicked(){
         ds.setDir(directory);
         qDebug() <<ds.getDir();
     }
-}
-void MainWindow::setChanged(mySettings ms){
-
 }
