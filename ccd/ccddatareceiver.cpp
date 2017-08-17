@@ -1,10 +1,11 @@
 #include "ccddatareceiver.h"
-#include <QtCharts/QXYSeries>
-#include <QDebug>
+#include <QDateTime>
+
 
 CcdDataReceiver::CcdDataReceiver(QXYSeries * series, QObject *parent) :
     QIODevice(parent),
-    m_series(series)
+    m_series(series),
+    startTime(QDateTime::currentDateTime())
 {
 }
 
@@ -14,13 +15,11 @@ qint64 CcdDataReceiver::readData(char *data, qint64 maxSize){
     return -1;
 }
 
-qint64 CcdDataReceiver::writeData(const char *data, qint64 maxSize){
-    qDebug()<<"receive";
-    if(maxSize == 7296){
-        QVector<QPointF> points;
-        for (int i = 0; i < 3648; i++)
-            points.append(QPointF(i,data[i * 2] * 256 + data[i * 2 + 1]));
-        m_series->replace(points);
-    }
-    return maxSize;
+int CcdDataReceiver::charToInt(char a, char b){
+    return (((int) 0 | (unsigned char)a)<<8)|((int) 0 | (unsigned char)b);
+}
+
+void CcdDataReceiver::newSeries(QXYSeries * series){
+    m_series = series;
+    newSer = true;
 }

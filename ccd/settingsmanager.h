@@ -2,6 +2,7 @@
 #define SETTINGSMANAGER_H
 #include<QSettings>
 #include<QDir>
+#include<QObject>
 
 struct mySettings{
     int time;
@@ -16,12 +17,13 @@ struct mySettings{
 
 class SettingsManager:public QObject
 {
+    Q_OBJECT
 
 private:
     QSettings settings;
 
 public:
-    SettingsManager();
+    SettingsManager(QObject * parent = 0);
     void setDefaultDir(QString);
     QString getDefaultDir();
     void setTestTime(int);

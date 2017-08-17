@@ -8,6 +8,7 @@ QT       += core gui printsupport charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+
 TARGET = ccd
 TEMPLATE = app
 
@@ -26,27 +27,33 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    qcustomplot.cpp \
-    datastore.cpp \
     settingsmanager.cpp \
     settingsdialog.cpp \
     ftiodevice.cpp \
     ccddevice.cpp \
+    leddevice.cpp \
+    ccdrawdatareceiver.cpp \
+    ccdseriesdatareciver.cpp \
+    ccddatatablemodel.cpp \
+    ccdseriesmanager.cpp \
     ccddatareceiver.cpp \
-    leddevice.cpp
+    datastore.cpp
 
 HEADERS += \
         mainwindow.h \
-    qcustomplot.h \
     WinTypes.h \
     ftd2xx.h \
-    datastore.h \
     settingsmanager.h \
     settingsdialog.h \
     ftiodevice.h \
     ccddevice.h \
+    leddevice.h \
+    ccdrawdatareceiver.h \
+    ccdseriesdatareciver.h \
+    ccddatatablemodel.h \
+    ccdseriesmanager.h \
     ccddatareceiver.h \
-    leddevice.h
+    datastore.h
 
 FORMS += \
         mainwindow.ui \
@@ -73,3 +80,6 @@ INCLUDEPATH += $$PWD/.
 DEPENDPATH += $$PWD/.
 
 win32: PRE_TARGETDEPS += $$PWD/./ftd2xx.lib
+
+RESOURCES += \
+    image.qrc

@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QIODevice>
 #include <QtCharts/QChartGlobal>
+#include <QVector>
+#include <QDateTime>
+#include <algorithm>
 
 QT_CHARTS_BEGIN_NAMESPACE
 class QXYSeries;
@@ -14,12 +17,16 @@ QT_CHARTS_USE_NAMESPACE
 class CcdDataReceiver : public QIODevice
 {
     Q_OBJECT
-     QXYSeries *m_series;
+protected:
+    QXYSeries *m_series;
+    bool newSer;
+    QDateTime startTime;
+    int charToInt(char a, char b);
+    qint64 readData(char * data, qint64 maxSize);
+    virtual qint64 writeData(const char * data, qint64 maxSize){}
 public:
     explicit CcdDataReceiver(QXYSeries * series, QObject *parent = 0);
-protected:
-    qint64 readData(char * data, qint64 maxSize);
-    qint64 writeData(const char * data, qint64 maxSize);
+    void newSeries(QXYSeries * series);
 };
 
 #endif // CCDDATARECEIVER_H

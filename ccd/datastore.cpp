@@ -1,19 +1,31 @@
 #include "datastore.h"
 
-QJsonDocument dataStore::toJson(ccdData* cd,int len,QString t){
-    QJsonArray final;
+QJsonDocument dataStore::toJson(QVector<SeriesData*> &v){
+    int len = v.size();
+
+    QJsonArray data;
     for(int i = 0; i < len; i ++){
         QJsonArray jsCCDData;
-        for(int j = 50; j < 1500; j ++){
-            jsCCDData.append(cd[i][j]);
+        QVector<QPointF> points = v[i]->series->pointsVector();
+        for(int j = 0; j < points.length(); j++)
+        {
+            QJsonArray now;
+            now.append(points[j].x());
+            now.append(points[j].y());
+            jsCCDData.append(now);
         }
         QJsonObject obj
         {
-            {"time",t},
-            {"data",jsCCDData}
+            {"time", v[i]->timestamp.toString(Qt::DateFormat::ISODateWithMs)},
+            {"len", jsCCDData.size()},
+            {"ccdData",jsCCDData}
         };
-        final.append(obj);
+        data.append(obj);
     }
+    QJsonObject final{
+        {"mode",2},
+        {"data", data}
+    };
     QJsonDocument doc(final);
     return doc;
 }
@@ -21,14 +33,13 @@ QJsonDocument dataStore::toJson(ccdData* cd,int len,QString t){
 dataStore::dataStore(){
     dir = setman.getDefaultDir();
 }
-bool dataStore::writeData(ccdData* cd,int len,QDateTime t){
+bool dataStore::writeData(QVector<SeriesData*> &v,QDateTime t){
+    dir = setman.getDefaultDir();
     QString strtime = t.toString(Qt::DateFormat::ISODateWithMs);
-    QJsonDocument js = toJson(cd,len,strtime);
-    //qDebug() << js;
+    QJsonDocument js = toJson(v);
     QString path = dir + "/" + strtime + ".json";
     QFile file(path);
     if(file.open(QIODevice::WriteOnly|QIODevice::Text)){
-        qDebug() << "OK";
         QTextStream out(&file);
         out<< js.toJson(QJsonDocument::JsonFormat::Compact);
         file.close();
