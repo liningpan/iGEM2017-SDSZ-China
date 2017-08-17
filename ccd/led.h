@@ -8,7 +8,7 @@ using namespace std;
 class led : public ftdevice
 {
 public:
-    led(const string &sn = "A501JYU4") : ftdevice(sn), condition(false) {}
+    led(const string &sn = "AD01V9AS") : ftdevice(sn), condition(false) {}
     bool open();
     bool trigger();
     void turnOn();

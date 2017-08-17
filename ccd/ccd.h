@@ -17,7 +17,7 @@ public:
      * @brief ccd
      * @param serialNumber : 12345678 & FTT5B0N6
      */
-    ccd(const string &serialNumber = "12345678") : ftdevice(serialNumber) {}
+    ccd(const string &serialNumber = "FTT5B0N6") : ftdevice(serialNumber) {}
     bool open();
     bool getData(ccdData &dat);
 private:

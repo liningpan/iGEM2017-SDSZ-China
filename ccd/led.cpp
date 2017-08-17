@@ -15,11 +15,11 @@ bool led::open()
 }
 
 void led::turnOn(){
-    write("1");
+    write("#4$1%&");
     condition = true;
 }
 void led::turnOff(){
-    write("0");
+    write("#4$0%&");
     condition = false;
 }
 bool led::trigger(){
