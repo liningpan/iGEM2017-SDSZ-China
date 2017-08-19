@@ -1,36 +1,81 @@
 #include "datastore.h"
 
-QJsonDocument dataStore::toJson(ccdData* cd,int len,QString t){
-    QJsonArray final;
+QJsonDocument dataStore::toJson(QVector<SeriesData*> &v){
+    int len = v.size();
+
+    QJsonArray data;
     for(int i = 0; i < len; i ++){
         QJsonArray jsCCDData;
-        for(int j = 50; j < 1500; j ++){
-            jsCCDData.append(cd[i][j]);
+        QVector<QPointF> points = v[i]->series->pointsVector();
+        for(int j = 0; j < points.length(); j++)
+        {
+            QJsonArray now;
+            now.append(points[j].x());
+            now.append(points[j].y());
+            jsCCDData.append(now);
         }
         QJsonObject obj
         {
-            {"time",t},
-            {"data",jsCCDData}
+            {"time", v[i]->timestamp.toString(Qt::DateFormat::ISODateWithMs)},
+            {"len", jsCCDData.size()},
+            {"ccdData",jsCCDData}
         };
-        final.append(obj);
+        data.append(obj);
     }
+    QJsonObject final{
+        {"mode",2},
+        {"data", data}
+    };
     QJsonDocument doc(final);
     return doc;
 }
 
 dataStore::dataStore(){
-    dir = "";
+    dir = setman.getDefaultDir();
 }
-bool dataStore::writeData(ccdData* cd,int len,QDateTime t){
+bool dataStore::writeData(QVector<SeriesData*> &v,QDateTime t, bool json,bool csv){
     QString strtime = t.toString(Qt::DateFormat::ISODateWithMs);
-    QJsonDocument js = toJson(cd,len,strtime);
-    //qDebug() << js;
-    QString path = dir + "/" + strtime + ".json";
-    QFile file(path);
-    if(file.open(QIODevice::WriteOnly|QIODevice::Text)){
-        qDebug() << "OK";
-        QTextStream out(&file);
-        out<< js.toJson(QJsonDocument::JsonFormat::Compact);
-        file.close();
+    dir = setman.getDefaultDir();
+    if(json){
+
+        QJsonDocument js = toJson(v);
+        QString path = dir + "/" + strtime + ".json";
+        QFile jsfile(path);
+        if(jsfile.open(QIODevice::WriteOnly|QIODevice::Text)){
+            QTextStream jsout(&jsfile);
+            jsout<< js.toJson(QJsonDocument::JsonFormat::Compact);
+            jsfile.close();
+        }
     }
+    if(csv){
+        QStringList strlist;
+        int maxlen = 0;
+        for(int i = 0;i < v.length(); i ++){
+            int tmp = v[i]->series->pointsVector().size();
+            if(tmp > maxlen){
+                maxlen = tmp;
+            }
+        }
+        for(int i = 0; i < maxlen; i ++){
+            QString str;
+            for(int j = 0; j < v.length(); j++){
+                if(i < v[j]->series->pointsVector().size()){
+                    QPointF point = v[j]->series->pointsVector()[i];
+                    str += QString::number(point.x(),'g',3) + ','
+                    + QString::number(point.y(),'g',6) + ',';
+                }else{
+                    str+= ",,";
+                }
+            }
+            strlist.append(str);
+        }
+        QString path = dir + "/" + strtime + ".csv";
+        QFile csvfile(path);
+        if(csvfile.open(QIODevice::WriteOnly|QIODevice::Text)){
+            QTextStream csvout(&csvfile);
+            csvout<<strlist.join("\n");
+            csvfile.close();
+        }
+    }
+    return true;
 }
