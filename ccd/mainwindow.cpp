@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     cd = new ccdDevice("FTT5B0N6",this);
-    ld = new LedDevice("AD01V9AS",this);
+    ld = new LedDevice("A501JYU4",this);
     if(cd->open()&&ld->open()){
         qDebug()<<"connect";
     } else {

@@ -49,7 +49,7 @@ qint64 FTIODevice::readData(char *data, qint64 maxlen){
     DWORD TxBytes;
     DWORD EventDWord;
     FT_GetStatus(handle,&RxBytes,&TxBytes,&EventDWord);
-    unsigned int size = min(RxBytes,(unsigned int)maxlen);
+    unsigned int size = min(RxBytes,(DWORD)maxlen);
     FT_STATUS st = FT_Read(handle, data, size, &sz);
     if(FT_SUCCESS(st)){
         return sz;
@@ -61,6 +61,7 @@ qint64 FTIODevice::readData(char *data, qint64 maxlen){
 qint64 FTIODevice::writeData(const char *data, qint64 len){
     DWORD sz;
     FT_STATUS st = FT_Write(handle, (void*) data, len, &sz);
+    qDebug()<<data;
     if(FT_SUCCESS(st)){
         return sz;
     }else{

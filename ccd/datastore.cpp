@@ -35,6 +35,9 @@ dataStore::dataStore(){
 }
 bool dataStore::writeData(QVector<SeriesData*> &v,QDateTime t, bool json,bool csv){
     QString strtime = t.toString(Qt::DateFormat::ISODateWithMs);
+    for (int i = 0; i < strtime.size(); i++)
+        if (strtime[i] == ':')
+            strtime[i] = '_';
     dir = setman.getDefaultDir();
     if(json){
 

@@ -69,7 +69,7 @@ public:
         v.x = new QValueAxis(this);
         v.x->setRange(0,3648);
         v.x->setLabelFormat("%d");
-        v.x->setTitleText("Pixle");
+        v.x->setTitleText("Pixel");
 
         v.y = new QValueAxis(this);
         v.y->setRange(0,65535);
