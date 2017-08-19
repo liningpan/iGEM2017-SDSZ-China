@@ -8,6 +8,7 @@ class LedDevice : public FTIODevice
 {
     Q_OBJECT
 public:
+    explicit LedDevice(const string &serialNumber = "A501JYU4", QObject* parent = 0);
     bool open(OpenMode mode = ReadWrite);
     void setLightCondition(bool con);
     void setBoardOneUp();
