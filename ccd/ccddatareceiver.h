@@ -23,7 +23,7 @@ protected:
     QDateTime startTime;
     int charToInt(char a, char b);
     qint64 readData(char * data, qint64 maxSize);
-    virtual qint64 writeData(const char * data, qint64 maxSize){}
+    virtual qint64 writeData(const char * data, qint64 maxSize) = 0;
 public:
     explicit CcdDataReceiver(QXYSeries * series, QObject *parent = 0);
     void newSeries(QXYSeries * series);

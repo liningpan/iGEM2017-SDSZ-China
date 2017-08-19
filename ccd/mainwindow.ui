@@ -161,31 +161,81 @@
             <property name="title">
              <string>GroupBox</string>
             </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
             <layout class="QGridLayout" name="gridLayout_4">
              <item row="1" column="0">
+              <widget class="QToolButton" name="lightSwitch">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset theme="light" resource="image.qrc">
+                 <normaloff>:/off.png</normaloff>
+                 <normalon>:/on.png</normalon>:/off.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+               <property name="autoRepeat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
               <widget class="QPushButton" name="set100T">
                <property name="text">
                 <string>100%T</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
+             <item row="1" column="2">
               <widget class="QPushButton" name="set0T">
                <property name="text">
                 <string>0%T</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
+             <item row="1" column="3">
               <widget class="QComboBox" name="mode">
                <item>
                 <property name="text">
                  <string>Average</string>
                 </property>
                </item>
+               <item>
+                <property name="text">
+                 <string>Raw</string>
+                </property>
+               </item>
               </widget>
              </item>
-             <item row="0" column="0" colspan="3">
+             <item row="0" column="0" colspan="4">
               <widget class="QLCDNumber" name="lcdNumber">
                <property name="mode">
                 <enum>QLCDNumber::Dec</enum>
@@ -203,12 +253,13 @@
             <zorder>set100T</zorder>
             <zorder>set0T</zorder>
             <zorder>mode</zorder>
+            <zorder>lightSwitch</zorder>
            </widget>
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
-             <string>Boards</string>
+             <string>Device Control</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_3">
              <item row="0" column="0">
@@ -228,6 +279,13 @@
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Pump</string>
                </property>
               </widget>
              </item>
@@ -265,6 +323,38 @@
              </item>
              <item row="1" column="1">
               <widget class="QToolButton" name="BoardTwoUp">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="image.qrc">
+                 <normaloff>:/up_arrow.png</normaloff>:/up_arrow.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QToolButton" name="PumpOut">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -359,6 +449,38 @@
                </property>
               </widget>
              </item>
+             <item row="2" column="2">
+              <widget class="QToolButton" name="PumpStop">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="image.qrc">
+                 <normaloff>:/IMG_2183.PNG</normaloff>:/IMG_2183.PNG</iconset>
+               </property>
+              </widget>
+             </item>
              <item row="3" column="0">
               <widget class="QToolButton" name="BoardOneDown">
                <property name="sizePolicy">
@@ -423,6 +545,38 @@
                </property>
               </widget>
              </item>
+             <item row="3" column="2">
+              <widget class="QToolButton" name="PumpIn">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="image.qrc">
+                 <normaloff>:/down_arrow.png</normaloff>:/down_arrow.png</iconset>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -438,21 +592,48 @@
             <property name="title">
              <string>Settings</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
+            <layout class="QGridLayout" name="gridLayout_5">
+             <item row="0" column="0">
               <widget class="QLabel" name="label_5">
                <property name="text">
                 <string>Data path:</string>
                </property>
               </widget>
              </item>
-             <item>
+             <item row="0" column="1" colspan="2">
               <widget class="QLineEdit" name="pathLineEdit"/>
              </item>
-             <item>
+             <item row="0" column="3">
               <widget class="QPushButton" name="browseButton">
                <property name="text">
                 <string>Browse</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Data Formate:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QCheckBox" name="checkBox">
+               <property name="text">
+                <string>.json</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QCheckBox" name="checkBox_2">
+               <property name="text">
+                <string>.csv</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
                </property>
               </widget>
              </item>

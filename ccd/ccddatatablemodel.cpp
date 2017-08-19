@@ -50,13 +50,17 @@ QVariant CcdDataTableModel::data(const QModelIndex &index, int role) const{
 }
 
 bool CcdDataTableModel::setData(const QModelIndex &index, const QVariant &value, int role){
+    Q_UNUSED(role)
     if(index.isValid()){
         m_data[index.column()]->replace(index.row(),value.toDouble());
         emit(dataChanged(index,index));
+        return true;
     }
+    return false;
 }
 
 Qt::ItemFlags CcdDataTableModel::flags(const QModelIndex &index) const{
+    Q_UNUSED(index)
     return Qt::NoItemFlags;
 }
 

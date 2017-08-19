@@ -83,3 +83,5 @@ win32: PRE_TARGETDEPS += $$PWD/./ftd2xx.lib
 
 RESOURCES += \
     image.qrc
+
+DISTFILES +=

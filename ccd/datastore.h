@@ -32,7 +32,7 @@ public:
     dataStore();
     void setDir(QString &d){ dir = d; }
     QString getDir(){ return dir; }
-    bool writeData(QVector<SeriesData*>&,QDateTime);
+    bool writeData(QVector<SeriesData*>& v,QDateTime t,bool json=true,bool csv = true);
 };
 
 #endif // DATASTORE_H

@@ -18,6 +18,11 @@ ccdDevice::ccdDevice(const string &serialNumber, QObject *parent) :
 
 bool ccdDevice::open(OpenMode mode){
     isOpen = FTIODevice::open(mode);
+    if(!isOpen){
+        isOpen = true;
+        randomDataForTest =true;
+        return true;
+    }
     return isOpen;
 }
 
@@ -27,9 +32,14 @@ void ccdDevice::setDevice(QIODevice *dm){
 }
 
 void ccdDevice::start(float interval,int testTime){
+    /*
+     * if testTime = 0 test forever
+     * */
     if(!(isOpen&&deviceSet)) return;
     readTimer->start(interval*1000);
-    stopTimer->start(testTime*1000);
+    qDebug()<<"start";
+    if(testTime != 0)
+        stopTimer->start(testTime*1000);
 }
 void ccdDevice::timeToRead(){
     if(!(isOpen&&deviceSet)) return;

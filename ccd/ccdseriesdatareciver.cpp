@@ -19,7 +19,7 @@ qint64 CcdSeriesDataReciver::writeData(const char *data, qint64 maxSize){
         std::sort(da.begin(),da.end());
         float to = 0;
         for (int i = 10; i < 30; i++){
-             to += da[i];
+             to += da[3648 - i];
         }
         to /= 20.0;
         qDebug()<<to;
@@ -34,4 +34,5 @@ qint64 CcdSeriesDataReciver::writeData(const char *data, qint64 maxSize){
         }
         return maxSize;
     }
+    return -1;
 }

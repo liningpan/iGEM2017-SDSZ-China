@@ -11,14 +11,14 @@ bool FTIODevice::open(OpenMode mode){
     QIODevice::open(mode);
     DWORD numDevs;
     FT_STATUS st = FT_CreateDeviceInfoList(&numDevs);
-    int index;
+    int index = 0;
     if(st == FT_OK){
         qDebug() << numDevs << "devices";
         FT_DEVICE_LIST_INFO_NODE * node = new FT_DEVICE_LIST_INFO_NODE[numDevs];
         DWORD len;
         st = FT_GetDeviceInfoList(node,&len);
         if(st == FT_OK){
-            for(int i = 0; i < len; i ++){
+            for(unsigned int i = 0; i < len; i ++){
                 qDebug() << node[i].SerialNumber;
                 if((string)node[i].SerialNumber == serialNumber){
                     index = i;
@@ -49,7 +49,8 @@ qint64 FTIODevice::readData(char *data, qint64 maxlen){
     DWORD TxBytes;
     DWORD EventDWord;
     FT_GetStatus(handle,&RxBytes,&TxBytes,&EventDWord);
-    FT_STATUS st = FT_Read(handle, data, RxBytes, &sz);
+    unsigned int size = min(RxBytes,(unsigned int)maxlen);
+    FT_STATUS st = FT_Read(handle, data, size, &sz);
     if(FT_SUCCESS(st)){
         return sz;
     }else{

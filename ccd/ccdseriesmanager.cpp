@@ -3,9 +3,9 @@
 
 
 CcdSeriesManager::CcdSeriesManager(const DataMode mode,QObject * parent) :
-    mode(mode),
     QObject(parent),
-    count(0)
+    count(0),
+    mode(mode)
 {
     rawDevice = new CcdRawDataReceiver(0,this);
     rawDevice->open(QIODevice::WriteOnly);
@@ -22,6 +22,7 @@ void CcdSeriesManager::deleteOldData(){
     for(int i = 0; i < series_data.size(); i ++){
         delete series_data[i]->mapper;
         delete series_data[i]->model;
+        delete series_data[i]->series;
     }
     series_data.clear();
     count = 0;

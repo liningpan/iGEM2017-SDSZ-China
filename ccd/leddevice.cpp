@@ -20,7 +20,7 @@ void LedDevice::setLightCondition(bool con){
     writeToDevice("4",QString::number(int(con)));
 }
 void LedDevice::setBoardOneUp(){
-    //UP & DOWN: #[1/2]$NO%SPEED&
+    //UP & DOWN: #[1/2/3]$NO%SPEED&
     writeToDevice("1","0","30");
 }
 void LedDevice::setBoardOneStop(){
@@ -38,6 +38,16 @@ void LedDevice::setBoardTwoStop(){
 void LedDevice::setBoardTwoDown(){
     writeToDevice("2","1","30");
 }
+void LedDevice::setPumpIn(){
+    writeToDevice("1","2","128");
+}
+void LedDevice::setPumpStop(){
+    writeToDevice("3","2");
+}
+void LedDevice::setPumpOut(){
+    writeToDevice("2","2","128");
+}
+
 void LedDevice::stop(){
     setBoardOneStop();
     setBoardTwoStop();

@@ -17,6 +17,7 @@ qint64 CcdRawDataReceiver::writeData(const char *data, qint64 maxSize){
         }
         //qDebug()<<points[1].ry();
         m_series->replace(points);
+        return maxSize;
     }
-    return maxSize;
+    return -1;
 }

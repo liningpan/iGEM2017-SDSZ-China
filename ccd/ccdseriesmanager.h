@@ -6,11 +6,13 @@
 #include <QVector>
 #include <QDateTime>
 #include <QVXYModelMapper>
+#include <QValueAxis>
 #include <QLineSeries>
 
 #include "ccddatatablemodel.h"
 #include "ccdrawdatareceiver.h"
 #include "ccdseriesdatareciver.h"
+#include "settingsmanager.h"
 #include "datastore.h"
 
 struct SeriesData{
@@ -22,6 +24,12 @@ struct SeriesData{
         timestamp = QDateTime::currentDateTime();
     }
 };
+struct XYAxis{
+    QValueAxis* x;
+    QValueAxis* y;
+    QVector<QXYSeries*> series;
+};
+
 class dataStore;
 
 QT_CHARTS_BEGIN_NAMESPACE
@@ -46,13 +54,55 @@ public:
     DataMode getMode() const { return mode; }
     void startTest();
     void testOnce();
-    QIODevice* getCurrentDevice() const{
+    CcdDataReceiver* getCurrentDevice() const{
         return currentDevice;
     }
+    SeriesData* getCurrentSeries() const{
+        return currentSeries;
+    }
+    CcdDataReceiver* getRawDevice() const{
+        return rawDevice;
+    }
     SeriesData* getSeriesDataByXYSeries(QXYSeries*);
+    XYAxis getRawAxis(){
+        XYAxis v;
+        v.x = new QValueAxis(this);
+        v.x->setRange(0,3648);
+        v.x->setLabelFormat("%d");
+        v.x->setTitleText("Pixle");
+
+        v.y = new QValueAxis(this);
+        v.y->setRange(0,65535);
+        v.y->setLabelFormat("%d");
+        v.y->setTitleText("Intensity");
+
+        v.series.append(new QLineSeries(this));
+        return v;
+    }
+    XYAxis getAverageAxis(){
+        XYAxis v;
+        v.x = new QValueAxis(this);
+        v.x->setRange(0,setman.getTestTime());
+        v.x->setLabelFormat("%d");
+        v.x->setTitleText("Time");
+
+        v.y = new QValueAxis(this);
+        v.y->setRange(0,65535);
+        v.y->setLabelFormat("%d");
+        v.y->setTitleText("Intensity");
+
+        for(int i = 0; i < series_data.size();i++){
+            v.series.append(series_data[i]->series);
+            v.series[i]->attachAxis(v.x);
+            v.series[i]->attachAxis(v.y);
+        }
+        return v;
+    }
+
     void storeData();
     void deleteOldData();
 private:
+    SettingsManager setman;
     QVector<SeriesData*> series_data;
     SeriesData* currentSeries;
     CcdDataReceiver* rawDevice;

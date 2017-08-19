@@ -39,12 +39,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool isScan(){ return scan; }
-
+public slots:
+    void tableDataChanged();
 private slots:
     void newFile();
     //void settings();
     void openFile();
-    void seriesClicked(QXYSeries*);
+    void seriesClicked();
 
     void on_BoardOneUp_clicked();
     void on_BoardOneStop_clicked();
@@ -53,6 +54,10 @@ private slots:
     void on_BoardTwoUp_clicked();
     void on_BoardTwoStop_clicked();
     void on_BoardTwoDown_clicked();
+
+    void on_PumpIn_clicked();
+    void on_PumpStop_clicked();
+    void on_PumpOut_clicked();
 
     void on_interval_currentTextChanged(QString);
     void on_testTime_valueChanged(int);
@@ -64,6 +69,7 @@ private slots:
     void on_set0T_clicked();
     void on_set100T_clicked();
     void on_mode_currentIndexChanged(int);
+    void on_lightSwitch_clicked();
 
     void on_browseButton_clicked();
 
@@ -73,14 +79,19 @@ private:
     ccdDevice *cd;
     CcdSeriesManager* csm;
     SeriesData* currentSeries;
-    QValueAxis* axisX;
-    QValueAxis *axisY;
+    XYAxis averageAxis;
+    XYAxis rawAxis;
     LedDevice *ld;
     QChart *m_chart;
     SettingsManager * setman;
     bool scan;
+    bool lightOn;
     int currentRow;
     int sernum;
+    DataMode mode;
+
+    void setRawDataMode();
+    void setAverageDataMode();
 };
 
 #endif // MAINWINDOW_H

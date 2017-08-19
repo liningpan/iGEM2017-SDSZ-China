@@ -17,6 +17,9 @@ public:
     void setBoardTwoUp();
     void setBoardTwoStop();
     void setBoardTwoDown();
+    void setPumpOut();
+    void setPumpStop();
+    void setPumpIn();
     void stop();
 private:
     bool condition;
